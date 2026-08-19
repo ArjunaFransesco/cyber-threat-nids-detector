@@ -11,6 +11,13 @@ import numpy as np
 import pandas as pd
 from typing import Dict, Any, List, Tuple
 
+# Ensure current module directory is in sys.path for joblib unpickling
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+if CURRENT_DIR not in sys.path:
+    sys.path.insert(0, CURRENT_DIR)
+
+import feature_engineering
+
 
 class NetworkThreatPredictor:
     def __init__(self, artifacts_dir: str = "models"):
