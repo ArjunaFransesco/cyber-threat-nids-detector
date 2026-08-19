@@ -1,0 +1,87 @@
+{
+  "test_performance": {
+    "Accuracy": 1.0,
+    "F1_Macro": 1.0,
+    "F1_Weighted": 1.0,
+    "Precision_Macro": 1.0,
+    "Recall_Macro": 1.0,
+    "Detection_Rate_Percent": 100.0,
+    "False_Alarm_Rate_Percent": 0.0,
+    "Confusion_Matrix": [
+      [
+        720,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        60,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        84,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        216,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        120
+      ]
+    ]
+  },
+  "cv_benchmark": [
+    {
+      "Model": "Random_Forest",
+      "CV_F1_Macro_Mean": 1.0,
+      "CV_F1_Macro_Std": 0.0,
+      "CV_Accuracy": 1.0,
+      "CV_Precision": 1.0,
+      "CV_Recall": 1.0
+    },
+    {
+      "Model": "XGBoost",
+      "CV_F1_Macro_Mean": 1.0,
+      "CV_F1_Macro_Std": 0.0,
+      "CV_Accuracy": 1.0,
+      "CV_Precision": 1.0,
+      "CV_Recall": 1.0
+    },
+    {
+      "Model": "LightGBM",
+      "CV_F1_Macro_Mean": 1.0,
+      "CV_F1_Macro_Std": 0.0,
+      "CV_Accuracy": 1.0,
+      "CV_Precision": 1.0,
+      "CV_Recall": 1.0
+    }
+  ],
+  "classes": [
+    "Benign",
+    "Botnet_C2",
+    "BruteForce",
+    "DoS_DDoS",
+    "PortScan"
+  ],
+  "dataset_summary": {
+    "total_records": 6000,
+    "train_samples": 4800,
+    "test_samples": 1200,
+    "features_count": 44
+  }
+}
