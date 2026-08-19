@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Threat NIDS & SOC Incident Intelligence | ML Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="cyber-grid-overlay"></div>
+
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>Cyber Threat NIDS & Anomaly Detector</h1>
+                    <p class="subtitle">Real-Time Network Telemetry Inspection & Zero-Day Threat Mitigation</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-pulse">● SOC MONITORING ACTIVE</span>
+                <span class="badge badge-accent">Model: {{ stats.get('best_model', 'Random_Forest') }}</span>
+                <a href="https://github.com/ArjunaFransesco/cyber-threat-nids-detector" target="_blank" class="badge badge-github">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub Repo
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Live Threat Simulator Bar -->
+        <div class="simulation-bar">
+            <span class="sim-label">Simulate Live Attack Telemetry:</span>
+            <div class="sim-buttons">
+                <button type="button" class="btn-sim" data-type="benign">🟢 Normal Traffic</button>
+                <button type="button" class="btn-sim" data-type="ddos">🔴 SYN Flood DDoS</button>
+                <button type="button" class="btn-sim" data-type="portscan">🟠 Port Scan</button>
+                <button type="button" class="btn-sim" data-type="bruteforce">🟣 SSH Brute Force</button>
+                <button type="button" class="btn-sim" data-type="botnet">🔵 Botnet C2 Beacon</button>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <!-- Telemetry Flow Form -->
+            <div class="card form-card">
+                <div class="card-header">
+                    <h2>Network Flow Telemetry Inspector</h2>
+                    <span class="badge badge-terminal">RFC-7011 IPFIX / NetFlow</span>
+                </div>
+
+                <form id="nids-form" class="nids-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="protocol_type">Transport Protocol</label>
+                            <select id="protocol_type" name="protocol_type">
+                                <option value="TCP" selected>TCP</option>
+                                <option value="UDP">UDP</option>
+                                <option value="ICMP">ICMP</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Network Service</label>
+                            <select id="service" name="service">
+                                <option value="HTTPS" selected>HTTPS (443)</option>
+                                <option value="HTTP">HTTP (80)</option>
+                                <option value="SSH">SSH (22)</option>
+                                <option value="DNS">DNS (53)</option>
+                                <option value="SMTP">SMTP (25)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="flow_duration_ms">Flow Duration (ms)</label>
+                            <input type="number" id="flow_duration_ms" name="flow_duration_ms" value="1200" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="packet_count">Total Flow Packets</label>
+                            <input type="number" id="packet_count" name="packet_count" value="18" min="1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="src_bytes">Source Bytes (Outbound)</label>
+                            <input type="number" id="src_bytes" name="src_bytes" value="1400" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dst_bytes">Dest Bytes (Inbound)</label>
+                            <input type="number" id="dst_bytes" name="dst_bytes" value="4500" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="packet_rate">Packet Rate (pkts/sec)</label>
+                            <input type="number" id="packet_rate" name="packet_rate" value="15" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="byte_rate">Byte Rate (bytes/sec)</label>
+                            <input type="number" id="byte_rate" name="byte_rate" value="4900" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="syn_count">SYN Flags Count</label>
+                            <input type="number" id="syn_count" name="syn_count" value="1" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ack_count">ACK Flags Count</label>
+                            <input type="number" id="ack_count" name="ack_count" value="18" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fin_count">FIN Flags</label>
+                            <input type="number" id="fin_count" name="fin_count" value="1" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="rst_count">RST Flags</label>
+                            <input type="number" id="rst_count" name="rst_count" value="0" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="failed_logins">Failed Logins Count</label>
+                            <input type="number" id="failed_logins" name="failed_logins" value="0" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="same_srv_rate">Same Service Rate (0.0-1.0)</label>
+                            <input type="number" id="same_srv_rate" name="same_srv_rate" value="0.95" min="0.0" max="1.0" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="diff_srv_rate">Diff Service Rate (0.0-1.0)</label>
+                            <input type="number" id="diff_srv_rate" name="diff_srv_rate" value="0.02" min="0.0" max="1.0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dst_host_count">Dst Host Count</label>
+                            <input type="number" id="dst_host_count" name="dst_host_count" value="12" min="1" max="255" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dst_host_srv_count">Dst Host Srv Count</label>
+                            <input type="number" id="dst_host_srv_count" name="dst_host_srv_count" value="45" min="1" max="255" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dst_host_serror_rate">SYN Error Rate (0.0-1.0)</label>
+                            <input type="number" id="dst_host_serror_rate" name="dst_host_serror_rate" value="0.01" min="0.0" max="1.0" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="dst_host_rerror_rate" name="dst_host_rerror_rate" value="0.0">
+
+                    <button type="submit" class="btn-submit" id="btn-inspect">
+                        <span class="btn-text">Inspect Network Flow & Classify Threat</span>
+                        <span class="spinner" id="form-spinner"></span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- SOC Incident Response Card -->
+            <div class="card results-card" id="results-container">
+                <div class="card-header">
+                    <h2>SOC Incident Classification & Action</h2>
+                    <span class="action-badge" id="badge-action">ALLOW TRAFFIC</span>
+                </div>
+
+                <div class="severity-display-wrapper">
+                    <div class="severity-circle">
+                        <div class="severity-number" id="severity-val">0</div>
+                        <div class="severity-title">Threat Severity</div>
+                        <div class="severity-tier" id="severity-tier">Clean Traffic</div>
+                    </div>
+
+                    <div class="metrics-column">
+                        <div class="metric-box">
+                            <span class="metric-label">Detected Attack Signature</span>
+                            <span class="metric-val" id="threat-category">Benign</span>
+                            <div class="meter-bar">
+                                <div class="meter-fill" id="meter-severity-fill" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="metric-box">
+                            <span class="metric-label">Zero-Day Isolation Anomaly Score</span>
+                            <span class="metric-val" id="anomaly-score">+0.129 (Normal)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Probability Distribution Breakdown -->
+                <div class="prob-section">
+                    <h3>Multi-Class Signature Probabilities</h3>
+                    <div class="prob-list" id="prob-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Identified Threat Indicators -->
+                <div class="indicators-section">
+                    <h3>SecOps Telemetry Anomalies & Risk Drivers</h3>
+                    <ul class="indicator-list" id="indicator-list">
+                        <li class="indicator-placeholder">Clean baseline traffic. No active indicators of compromise (IoC).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="app-footer">
+        <p>Built by <a href="https://github.com/ArjunaFransesco" target="_blank">Arjuna Fransesco</a> &bull; Automated Daily Machine Learning Portfolio Project</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
